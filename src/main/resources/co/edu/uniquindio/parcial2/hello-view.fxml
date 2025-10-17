@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="co.edu.uniquindio.parcial2.InmuebleController"
+      spacing="20"
+      style="-fx-padding: 20; -fx-background-color: #f4f4f4;">
+
+    <!-- Header -->
+    <Label text="Sistema de Gestión de Inmuebles"
+           style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <Separator style="-fx-padding: 0 0 10 0;"/>
+
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+        <!-- Panel izquierdo - Formulario -->
+        <VBox spacing="15" style="-fx-pref-width: 300; -fx-background-color: white; -fx-padding: 20; -fx-border-color: #ddd; -fx-border-radius: 5;">
+            <Label text="Registrar Nuevo Inmueble" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+
+            <GridPane hgap="10" vgap="15">
+                <padding><Insets top="10" bottom="10"/></padding>
+
+                <!-- Tipo de Inmueble -->
+                <Label text="Tipo:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="cbTipo" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-pref-width: 150;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="CASA"/>
+                            <String fx:value="APARTAMENTO"/>
+                            <String fx:value="LOCAL"/>
+                            <String fx:value="FINCA"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <!-- Ciudad -->
+                <Label text="Ciudad:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtCiudad" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-pref-width: 150;"/>
+
+                <!-- Número de Habitaciones -->
+                <Label text="Habitaciones:" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtHabitaciones" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-pref-width: 150;"/>
+
+                <!-- Número de Pisos -->
+                <Label text="Pisos:" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtPisos" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-pref-width: 150;"/>
+
+                <!-- Precio -->
+                <Label text="Precio:" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtPrecio" GridPane.columnIndex="1" GridPane.rowIndex="4" style="-fx-pref-width: 150;"/>
+            </GridPane>
+
+            <!-- Botones del formulario -->
+            <VBox spacing="10" style="-fx-padding: 20 0 0 0;">
+                <Button fx:id="btnAgregar" text="Agregar Inmueble"
+                        style="-fx-pref-width: 200; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                <Button fx:id="btnLimpiar" text="Limpiar Formulario"
+                        style="-fx-pref-width: 200; -fx-background-color: #95a5a6; -fx-text-fill: white;"/>
+            </VBox>
+
+            <!-- Mensajes de estado -->
+            <Label fx:id="lblMensaje" style="-fx-text-fill: #e74c3c; -fx-wrap-text: true;" visible="false"/>
+        </VBox>
+
+        <!-- Panel derecho - Listado -->
+        <VBox spacing="15" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 20; -fx-border-color: #ddd; -fx-border-radius: 5;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Listado de Inmuebles" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+                <Label fx:id="lblContador" text="(0 inmuebles)" style="-fx-text-fill: #7f8c8d;"/>
+            </HBox>
+
+            <!-- Tabla de inmuebles -->
+            <TableView fx:id="tblInmuebles" VBox.vgrow="ALWAYS" style="-fx-pref-height: 300;">
+                <columns>
+                    <TableColumn fx:id="colTipo" text="Tipo" style="-fx-pref-width: 100;"/>
+                    <TableColumn fx:id="colCiudad" text="Ciudad" style="-fx-pref-width: 120;"/>
+                    <TableColumn fx:id="colHabitaciones" text="Habitaciones" style="-fx-pref-width: 90;"/>
+                    <TableColumn fx:id="colPisos" text="Pisos" style="-fx-pref-width: 80;"/>
+                    <TableColumn fx:id="colPrecio" text="Precio" style="-fx-pref-width: 120;"/>
+                </columns>
+            </TableView>
+
+            <!-- Botones de acciones -->
+            <HBox spacing="10">
+                <Button fx:id="btnEliminar" text="Eliminar Seleccionado"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                <Button fx:id="btnActualizar" text="Actualizar Lista"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>
