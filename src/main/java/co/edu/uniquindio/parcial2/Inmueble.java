@@ -1,6 +1,6 @@
 package co.edu.uniquindio.parcial2;
 
-// Patrón Builder + co.edu.uniquindio.parcial2.Decorator
+// Patrón Builder + Decorator
 public class Inmueble implements InmuebleComponent {
 
     private String tipo;

@@ -85,14 +85,14 @@
                 <Label fx:id="lblContador" text="(0 inmuebles)" style="-fx-text-fill: #7f8c8d;"/>
             </HBox>
 
-            <!-- 🔽🔽🔽 BLOQUE NUEVO: Selector de vista (Detalle/Resumen) 🔽🔽🔽 -->
+            <!--  BLOQUE NUEVO: Selector de vista (Detalle/Resumen)  -->
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <Label text="Vista:" style="-fx-font-weight: bold;"/>
                 <ComboBox fx:id="cbVista" prefWidth="150"/>
             </HBox>
-            <!-- 🔼🔼🔼 FIN BLOQUE NUEVO 🔼🔼🔼 -->
+            <!--  FIN BLOQUE NUEVO  -->
 
-            <!-- 🔽🔽🔽 NUEVO TextArea para mostrar la vista decorada 🔽🔽🔽 -->
+            <!-- NUEVO TextArea para mostrar la vista decorada -->
             <TextArea fx:id="txtVistaDecorada"
                       prefWidth="500"
                       prefHeight="120"
@@ -100,7 +100,7 @@
                       editable="false"
                       promptText="Vista decorada del inmueble seleccionado..."
                       style="-fx-border-color: #bbb; -fx-border-radius: 5; -fx-background-color: #f9f9f9;"/>
-            <!-- 🔼🔼🔼 FIN NUEVO TextArea 🔼🔼🔼 -->
+            <!-- FIN NUEVO TextArea  -->
 
             <!-- Tabla de inmuebles -->
             <TableView fx:id="tblInmuebles" VBox.vgrow="ALWAYS" style="-fx-pref-height: 300;">

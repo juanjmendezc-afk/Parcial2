@@ -23,7 +23,7 @@ public class InmuebleController {
 
     // Componentes FXML
     @FXML private ComboBox<String> cbTipo;
-    @FXML private ComboBox<String> cbVista; // 👈 Nuevo ComboBox para elegir la vista (Resumen / Detalle)
+    @FXML private ComboBox<String> cbVista;
     @FXML private TextField txtCiudad;
     @FXML private TextField txtHabitaciones;
     @FXML private TextField txtPisos;
@@ -34,7 +34,7 @@ public class InmuebleController {
     @FXML private Button btnActualizar;
     @FXML private Label lblMensaje;
     @FXML private Label lblContador;
-    @FXML private TextArea txtVistaDecorada; // 👈 Nuevo área de texto para mostrar la vista decorada
+    @FXML private TextArea txtVistaDecorada;
 
     @FXML private TableView<Inmueble> tblInmuebles;
     @FXML private TableColumn<Inmueble, String> colTipo;
