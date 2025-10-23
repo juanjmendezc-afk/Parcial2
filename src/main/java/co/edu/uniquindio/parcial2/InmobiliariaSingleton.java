@@ -1,7 +1,7 @@
 package co.edu.uniquindio.parcial2;
 
 import java.util.ArrayList;
-
+//Singleton para gestionar los inmuebles
 public class InmobiliariaSingleton {
 
     private static InmobiliariaSingleton instancia;

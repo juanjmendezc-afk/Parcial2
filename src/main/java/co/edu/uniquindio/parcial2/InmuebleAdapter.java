@@ -1,16 +1,17 @@
 package co.edu.uniquindio.parcial2;
-
+// Adapter para Inmueble
 public class InmuebleAdapter extends Inmueble {
 
     private Inmueble inmueble;
 
     public InmuebleAdapter(Inmueble inmueble) {
-        super(Inmueble.getTipoInmueble(),
-                Inmueble.getCiudad(),
-                0,
-                0,
+        super(inmueble.getTipo(),
+                inmueble.getCiudad(),
+                inmueble.getHabitaciones(),
+                inmueble.getPisos(),
                 inmueble.getPrecio());
-        this.Inmueble = inmueble;
+
+        this.inmueble = inmueble;
     }
 
     public Inmueble getInmueble() {

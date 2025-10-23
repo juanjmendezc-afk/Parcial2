@@ -1,61 +1,75 @@
 package co.edu.uniquindio.parcial2;
 
-public class Inmueble {
-    private TipoInmueble tipoInmueble;
-    private int pisos, habitaciones, precio;
+// Patrón Builder + co.edu.uniquindio.parcial2.Decorator
+public class Inmueble implements InmuebleComponent {
+
+    private String tipo;
     private String ciudad;
+    private int habitaciones;
+    private int pisos;
+    private double precio;
 
-    public Inmueble(TipoInmueble tipoInmueble, String ciudad, int habitaciones, int pisos, int precio) {
-        this.tipoInmueble = tipoInmueble;
-        this.ciudad = ciudad;
-        this.habitaciones = habitaciones;
-        this.pisos = pisos;
-        this.precio = precio;
+    private Inmueble(Builder builder) {
+        this.tipo = builder.tipo;
+        this.ciudad = builder.ciudad;
+        this.habitaciones = builder.habitaciones;
+        this.pisos = builder.pisos;
+        this.precio = builder.precio;
     }
 
-    public TipoInmueble getTipoInmueble() {
-        return tipoInmueble;
-    }
+    public Inmueble(Object tipoInmueble, String ciudad, int i, int i1, double precio) {}
 
-    public int getPisos() {
-        return pisos;
-    }
-
-    public int getHabitaciones() {
-        return habitaciones;
-    }
-
-    public int getPrecio() {
-        return precio;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setTipoInmueble(TipoInmueble tipoInmueble) {
-        this.tipoInmueble = tipoInmueble;
-    }
-
-    public void setPisos(int pisos) {
-        this.pisos = pisos;
-    }
-
-    public void setHabitaciones(int habitaciones) {
-        this.habitaciones = habitaciones;
-    }
-
-    public void setPrecio(int precio) {
-        this.precio = precio;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
+    public String getTipo() { return tipo; }
+    public String getCiudad() { return ciudad; }
+    public int getHabitaciones() { return habitaciones; }
+    public int getPisos() { return pisos; }
+    public double getPrecio() { return precio; }
 
     @Override
     public String toString() {
-        return "Inmueble [tipoInmueble=" + tipoInmueble + ", pisos=" + pisos + ", habitaciones=" + habitaciones
-                + ", precio=" + precio + ", ciudad=" + ciudad + "]";
+        return tipo + " en " + ciudad + " (" + habitaciones + " hab, " + pisos + " pisos, $" + precio + ")";
+    }
+
+    @Override
+    public String mostrarInformacion() {
+        return toString();
+    }
+
+    public static class Builder {
+        private String tipo;
+        private String ciudad;
+        private int habitaciones;
+        private int pisos;
+        private double precio;
+
+        public Builder tipo(String tipo) {
+            this.tipo = tipo;
+            return this;
+        }
+
+        public Builder ciudad(String ciudad) {
+            this.ciudad = ciudad;
+            return this;
+        }
+
+        public Builder habitaciones(int habitaciones) {
+            this.habitaciones = habitaciones;
+            return this;
+        }
+
+        public Builder pisos(int pisos) {
+            this.pisos = pisos;
+            return this;
+        }
+
+        public Builder precio(double precio) {
+            this.precio = precio;
+            return this;
+        }
+
+        public Inmueble build() {
+            return new Inmueble(this);
+        }
     }
 }
+

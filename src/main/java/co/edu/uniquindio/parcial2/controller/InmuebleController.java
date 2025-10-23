@@ -1,22 +1,29 @@
-package co.edu.uniquindio.parcial2;
+package co.edu.uniquindio.parcial2.controller;
 
+import co.edu.uniquindio.parcial2.Inmueble;
+import co.edu.uniquindio.parcial2.InmuebleComponent;
+import co.edu.uniquindio.parcial2.InmobiliariaSingleton;
+import co.edu.uniquindio.parcial2.Decorator.DetalleDecorator;
+import co.edu.uniquindio.parcial2.Decorator.ResumenDecorator;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
-import java.util.ArrayList;
 
 public class InmuebleController {
 
     // Singleton Pattern
     private final InmobiliariaSingleton inmobiliaria = InmobiliariaSingleton.getInstancia();
-
-    // Factory Method Pattern
-    private final InmuebleFactory factory = new InmuebleFactory();
+    @FXML public TableColumn<String, String> colExtras;
+    @FXML public CheckBox chkAmoblado;
+    @FXML public CheckBox chkGaraje;
+    @FXML public CheckBox chkPiscina;
+    @FXML public CheckBox chkJardin;
 
     // Componentes FXML
     @FXML private ComboBox<String> cbTipo;
+    @FXML private ComboBox<String> cbVista; // 👈 Nuevo ComboBox para elegir la vista (Resumen / Detalle)
     @FXML private TextField txtCiudad;
     @FXML private TextField txtHabitaciones;
     @FXML private TextField txtPisos;
@@ -27,13 +34,14 @@ public class InmuebleController {
     @FXML private Button btnActualizar;
     @FXML private Label lblMensaje;
     @FXML private Label lblContador;
+    @FXML private TextArea txtVistaDecorada; // 👈 Nuevo área de texto para mostrar la vista decorada
 
     @FXML private TableView<Inmueble> tblInmuebles;
     @FXML private TableColumn<Inmueble, String> colTipo;
     @FXML private TableColumn<Inmueble, String> colCiudad;
     @FXML private TableColumn<Inmueble, Integer> colHabitaciones;
     @FXML private TableColumn<Inmueble, Integer> colPisos;
-    @FXML private TableColumn<Inmueble, Integer> colPrecio;
+    @FXML private TableColumn<Inmueble, Double> colPrecio;
 
     private ObservableList<Inmueble> inmueblesObservable;
 
@@ -46,7 +54,7 @@ public class InmuebleController {
 
     private void configurarComponentes() {
         // Configurar tabla
-        colTipo.setCellValueFactory(new PropertyValueFactory<>("tipoInmueble"));
+        colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         colCiudad.setCellValueFactory(new PropertyValueFactory<>("ciudad"));
         colHabitaciones.setCellValueFactory(new PropertyValueFactory<>("habitaciones"));
         colPisos.setCellValueFactory(new PropertyValueFactory<>("pisos"));
@@ -55,8 +63,13 @@ public class InmuebleController {
         inmueblesObservable = FXCollections.observableArrayList();
         tblInmuebles.setItems(inmueblesObservable);
 
-        // Seleccionar primer elemento del ComboBox
+        // ComboBox tipo de inmueble
+        cbTipo.setItems(FXCollections.observableArrayList("Casa", "Apartamento", "Finca", "Local"));
         cbTipo.getSelectionModel().selectFirst();
+
+        // ComboBox vista decorada
+        cbVista.setItems(FXCollections.observableArrayList("Detalle", "Resumen"));
+        cbVista.getSelectionModel().selectFirst();
     }
 
     private void configurarEventos() {
@@ -64,6 +77,12 @@ public class InmuebleController {
         btnLimpiar.setOnAction(e -> limpiarFormulario());
         btnEliminar.setOnAction(e -> eliminarInmueble());
         btnActualizar.setOnAction(e -> actualizarLista());
+
+        // Mostrar vista decorada al seleccionar inmueble o cambiar tipo de vista
+        tblInmuebles.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldVal, newVal) -> mostrarVistaDecorada(newVal)
+        );
+        cbVista.setOnAction(e -> mostrarVistaDecorada(tblInmuebles.getSelectionModel().getSelectedItem()));
     }
 
     @FXML
@@ -86,18 +105,20 @@ public class InmuebleController {
                 return;
             }
 
-            // Factory Method Pattern: Crear inmueble usando la fábrica
-            Inmueble nuevoInmueble = factory.crearInmueble(tipo, ciudad, habitaciones, pisos, precio);
+            // Patrón Builder: construir inmueble paso a paso
+            Inmueble nuevoInmueble = new Inmueble.Builder()
+                    .tipo(tipo)
+                    .ciudad(ciudad)
+                    .habitaciones(habitaciones)
+                    .pisos(pisos)
+                    .precio(precio)
+                    .build();
 
-            if (nuevoInmueble != null) {
-                // Singleton Pattern: Agregar a la lista global
-                inmobiliaria.agregarInmueble(nuevoInmueble);
-                mostrarMensaje("Inmueble agregado correctamente", false);
-                limpiarFormulario();
-                actualizarLista();
-            } else {
-                mostrarMensaje("Tipo de inmueble no válido", true);
-            }
+            // Singleton Pattern: agregar inmueble a la lista global
+            inmobiliaria.agregarInmueble(nuevoInmueble);
+            mostrarMensaje("Inmueble agregado correctamente", false);
+            limpiarFormulario();
+            actualizarLista();
 
         } catch (NumberFormatException e) {
             mostrarMensaje("Por favor ingrese valores numéricos válidos", true);
@@ -110,7 +131,6 @@ public class InmuebleController {
     private void eliminarInmueble() {
         Inmueble seleccionado = tblInmuebles.getSelectionModel().getSelectedItem();
         if (seleccionado != null) {
-            // Singleton Pattern: Eliminar de la lista global
             inmobiliaria.getListaInmuebles().remove(seleccionado);
             mostrarMensaje("Inmueble eliminado correctamente", false);
             actualizarLista();
@@ -122,7 +142,6 @@ public class InmuebleController {
     @FXML
     private void actualizarLista() {
         inmueblesObservable.clear();
-        // Singleton Pattern: Obtener lista actualizada
         inmueblesObservable.addAll(inmobiliaria.getListaInmuebles());
         lblContador.setText("(" + inmueblesObservable.size() + " inmuebles)");
     }
@@ -135,6 +154,7 @@ public class InmuebleController {
         txtPrecio.clear();
         cbTipo.getSelectionModel().selectFirst();
         lblMensaje.setVisible(false);
+        txtVistaDecorada.clear();
     }
 
     private void mostrarMensaje(String mensaje, boolean esError) {
@@ -142,4 +162,25 @@ public class InmuebleController {
         lblMensaje.setStyle(esError ? "-fx-text-fill: #e74c3c;" : "-fx-text-fill: #27ae60;");
         lblMensaje.setVisible(true);
     }
+
+    /**
+     * Aplica el patrón co.edu.uniquindio.parcial2.Decorator según la vista seleccionada (Detalle o Resumen)
+     */
+    private void mostrarVistaDecorada(Inmueble inmueble) {
+        if (inmueble == null) {
+            txtVistaDecorada.clear();
+            return;
+        }
+
+        String vista = cbVista.getValue();
+        InmuebleComponent decorado;
+        if ("Detalle".equals(vista)) {
+            decorado = new DetalleDecorator(inmueble);
+        } else {
+            decorado = new ResumenDecorator(inmueble);
+        }
+
+        txtVistaDecorada.setText(decorado.mostrarInformacion());
+    }
+
 }
